@@ -71,3 +71,44 @@ export const deleteExpence = async (req, res) => {
     console.log(error);
   }
 };
+
+export const updateExpence = async (req, res) => {
+  try {
+    const { title, amount, catagory, date } = req.body;
+    const expenceId = req.params.id;
+    const userId = req.userId;
+
+    const expence = await Expence.findOne({
+      _id: expenceId,
+      user: userId,
+    });
+
+    if (!expence) {
+      return res.status(401).json({
+        message: "Expence not found",
+        success: false,
+      });
+    }
+
+    await Expence.updateOne(
+      {
+        _id: expenceId,
+        user: userId,
+      },
+      {
+        $set: {
+          title: title || expence.title,
+          amount: amount || expence.amount,
+          catagory: catagory || expence.catagory,
+          date: date || expence.date,
+        },
+      },
+    );
+    return res.status(200).json({
+      message: "expence updated successfully 👌",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
