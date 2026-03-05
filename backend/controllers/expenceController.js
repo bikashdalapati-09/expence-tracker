@@ -36,7 +36,7 @@ export const getExpence = async (req, res) => {
 
     res.status(200).json({
       expenses,
-      success: true
+      success: true,
     });
   } catch (error) {
     console.log(error);
@@ -44,5 +44,30 @@ export const getExpence = async (req, res) => {
 };
 
 export const deleteExpence = async (req, res) => {
-    
-}
+  try {
+    const expenceId = req.params.id;
+    const userId = req.userId;
+
+    const expence = await Expence.findOne({
+      _id: expenceId,
+      user: userId,
+    });
+    if (!expence) {
+      return res.status(400).json({
+        message: "Expence does not found 😭",
+      });
+    }
+
+    await Expence.deleteOne({
+      _id: expenceId,
+      user: userId,
+    });
+
+    return res.status(200).json({
+      message: "Expence deleted successfully 👌",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
