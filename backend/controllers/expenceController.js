@@ -1,4 +1,5 @@
 import Expence from "../models/expenceModel.js";
+import mongoose from "mongoose";
 
 export const addExpence = async (req, res) => {
   try {
@@ -157,6 +158,28 @@ export const filterExpence = async (req, res) => {
     return res.status(200).json({
       expences,
     });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getMonthlySummary = async (req, res) => {
+  try {
+
+    const summary = await Expence.aggregate([
+      {
+        $match: { user: new mongoose.Types.ObjectId(req.userId) }
+      },
+      {
+        $group: {
+          _id: { $month: "$date" },
+          totalAmount: { $sum: "$amount" }
+        }
+      }
+    ]);
+
+    res.json(summary);
+
   } catch (error) {
     console.log(error);
   }
