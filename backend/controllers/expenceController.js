@@ -14,7 +14,7 @@ export const addExpence = async (req, res) => {
     await Expence.create({
       title,
       amount,
-      catagory,
+      catagory: catagory.toLowerCase(),
       date,
       user: userId,
     });
@@ -107,6 +107,55 @@ export const updateExpence = async (req, res) => {
     return res.status(200).json({
       message: "expence updated successfully 👌",
       success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const totalExpence = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    const expences = await Expence.find({
+      user: userId,
+    });
+
+    if (expences.length === 0) {
+      return res.status(400).json({
+        message: "Expences not found",
+      });
+    }
+    let total = 0;
+    expences.map((e) => {
+      total += e.amount;
+    });
+
+    return res.status(200).json({
+      message: "Total expence calculated 👍",
+      "Total expence is": total,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const filterExpence = async (req, res) => {
+  try {
+    const catagory = req.query.catagory?.toLowerCase();
+    const userId = req.userId;
+
+    console.log(catagory);
+
+    const expences = await Expence.find({ user: userId, catagory: catagory });
+    if (expences.length === 0) {
+      return res.status(400).json({
+        message: "Any Expence not found, Add expences 🤡",
+      });
+    }
+
+    return res.status(200).json({
+      expences,
     });
   } catch (error) {
     console.log(error);
