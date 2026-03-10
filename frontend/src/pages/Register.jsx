@@ -1,7 +1,14 @@
 import { useState } from "react";
 import bg from "../assets/bg.png";
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios'
+import toast from "react-hot-toast";
+
 
 function Register() {
+
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -9,9 +16,21 @@ function Register() {
     confirmPassword: "",
   });
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(user);
+    try {
+      const res = await axios.post(`http://localhost:8000/api/user/register`, user);
+
+      if(res.data.success){
+        toast.success(res.data.message);
+        navigate("/login");
+      }
+      
+    } catch (error) {
+      toast.error(error.response.data.message);
+      console.log(error.response.data.message);
+      
+    }
     
   };
 
@@ -71,7 +90,7 @@ function Register() {
 
           <p className="text-white text-sm mt-4">
             Already have an account?
-            <span className="underline cursor-pointer ml-1">Login</span>
+            <Link to={"/login"}><span className="underline cursor-pointer ml-1">Login</span></Link>
           </p>
         </div>
       </div>

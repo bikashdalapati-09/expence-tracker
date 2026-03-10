@@ -12,7 +12,7 @@ export const register = async (req, res) => {
       });
     }
 
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       return res.status(404).json({
         message: "Password not matched 😭",
       });

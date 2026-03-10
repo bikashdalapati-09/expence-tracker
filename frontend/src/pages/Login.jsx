@@ -1,12 +1,28 @@
 import { useState } from "react";
 import bg from "../assets/bg.png";
+import { Link,useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function Login() {
+  const navigate = useNavigate();
   const [user, setUser] = useState({ email: "", password: "" });
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(user);
-    
+    try {
+      const res = await axios.post(
+        `http://localhost:8000/api/user/login`,
+        user,
+      );
+      if(res.data.success){
+        toast.success(res.data.message)
+        navigate("/dashboard")
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
+      toast.error(error.response.data.message);
+      
+    }
   };
   return (
     <div
@@ -48,7 +64,9 @@ function Login() {
 
           <p className="text-white text-sm mt-4">
             Don't have an account?
-            <span className="underline cursor-pointer ml-1">Register</span>
+            <Link to={"/register"}>
+              <span className="underline cursor-pointer ml-1">Register</span>
+            </Link>
           </p>
         </div>
       </div>
