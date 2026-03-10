@@ -1,6 +1,6 @@
 import { useState } from "react";
 import bg from "../assets/bg.png";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -13,15 +13,17 @@ function Login() {
       const res = await axios.post(
         `http://localhost:8000/api/user/login`,
         user,
+        {
+          withCredentials: true,
+        },
       );
-      if(res.data.success){
-        toast.success(res.data.message)
-        navigate("/dashboard")
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setTimeout(navigate("/dashboard"), 1500);
       }
     } catch (error) {
       console.log(error.response.data.message);
       toast.error(error.response.data.message);
-      
     }
   };
   return (
@@ -56,7 +58,7 @@ function Login() {
 
             <button
               type="submit"
-              className="bg-white text-gray-800 font-semibold p-3 rounded-lg hover:bg-gray-200 transition"
+              className="bg-white text-gray-800 font-semibold p-3 rounded-lg hover:bg-gray-200 transition cursor-pointer"
             >
               Login
             </button>

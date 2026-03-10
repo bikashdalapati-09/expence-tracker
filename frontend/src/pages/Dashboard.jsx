@@ -1,9 +1,26 @@
-import React from 'react'
+import Navbar from "../components/Navbar";
+import SummaryCards from "../components/SummaryCards";
+import AddExpense from "../components/AddExpense";
+import ExpenseList from "../components/ExpenseList";
 
-const Dashboard = () => {
+function Dashboard() {
   return (
-    <div>Dashboard</div>
-  )
+    <div className="min-h-screen bg-gray-100">
+
+      <Navbar />
+
+      <div className="max-w-6xl mx-auto p-6 space-y-8">
+
+        <SummaryCards />
+
+        <AddExpense />
+
+        <ExpenseList />
+
+      </div>
+
+    </div>
+  );
 }
 
-export default Dashboard
+export default Dashboard;
