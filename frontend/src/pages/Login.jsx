@@ -19,7 +19,8 @@ function Login() {
       );
       if (res.data.success) {
         toast.success(res.data.message);
-        setTimeout(navigate("/dashboard"), 1500);
+        localStorage.setItem("isLoggedIn", "true");
+        navigate("/dashboard");
       }
     } catch (error) {
       console.log(error.response.data.message);
