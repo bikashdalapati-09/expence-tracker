@@ -134,7 +134,7 @@ export const totalExpence = async (req, res) => {
 
     return res.status(200).json({
       message: "Total expence calculated 👍",
-      "total": total,
+      total: total,
     });
   } catch (error) {
     console.log(error);
@@ -165,22 +165,47 @@ export const filterExpence = async (req, res) => {
 
 export const getMonthlySummary = async (req, res) => {
   try {
-
     const summary = await Expence.aggregate([
       {
-        $match: { user: new mongoose.Types.ObjectId(req.userId) }
+        $match: { user: new mongoose.Types.ObjectId(req.userId) },
       },
       {
         $group: {
           _id: { $month: "$date" },
-          totalAmount: { $sum: "$amount" }
-        }
-      }
+          totalAmount: { $sum: "$amount" },
+        },
+      },
     ]);
 
     res.json(summary);
-
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getTodayExpence = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+
+    const end = new Date();
+    end.setHours(23, 59, 59, 999);
+
+    const expences = await Expence.find({
+      user: userId,
+      date:{$gte: start, $lte: end}
+    })
+
+    const total = expences.reduce((sum, e) => sum + e.amount, 0);
+    return res.status(200).json({
+      message: "Today expence fetched successfully",
+      todayAmmount: total,
+      success:true
+    })
+  } catch (error) {
+    console.log(error);
+    
   }
 };
