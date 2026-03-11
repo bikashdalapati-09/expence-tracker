@@ -69,16 +69,18 @@ const AddExpense = ({setRefresh}) => {
           onChange={(e) => setUser({ ...user, date: e.target.value })}
           value={user.date}
           type="date"
-          className="border p-2 rounded"
+          className="border p-2 rounded cursor-pointer"
         />
       </div>
 
-      <button
+      <div className="flex justify-end">
+        <button
         onClick={submitHandler}
-        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"
+        className="mt-4 mr-3 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"
       >
         Add Expense
       </button>
+      </div>
     </div>
   );
 };
