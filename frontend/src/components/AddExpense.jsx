@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const AddExpense = () => {
+const AddExpense = ({setRefresh}) => {
   const [user, setUser] = useState({
     title: "",
     amount: "",
@@ -23,6 +23,7 @@ const AddExpense = () => {
       );
       if(res.data.success){
         toast.success(res.data.message);
+        setRefresh(prev => !prev)
       }
     } catch (error) {
       console.log(error.response.data.message);

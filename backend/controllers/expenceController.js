@@ -134,7 +134,7 @@ export const totalExpence = async (req, res) => {
 
     return res.status(200).json({
       message: "Total expence calculated 👍",
-      "Total expence is": total,
+      "total": total,
     });
   } catch (error) {
     console.log(error);
