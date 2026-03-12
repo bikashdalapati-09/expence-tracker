@@ -195,17 +195,34 @@ export const getTodayExpence = async (req, res) => {
 
     const expences = await Expence.find({
       user: userId,
-      date:{$gte: start, $lte: end}
-    })
+      date: { $gte: start, $lte: end },
+    });
 
     const total = expences.reduce((sum, e) => sum + e.amount, 0);
     return res.status(200).json({
       message: "Today expence fetched successfully",
       todayAmmount: total,
-      success:true
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getRecentExpences = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    const data = await Expence.find({ user: userId })
+      .sort({ createdAt: -1 })
+      .limit(5);
+
+    return res.status(200).json({
+      message: "Recent expences fetched successfully 👌",
+      expences: data,
+      success: true
     })
   } catch (error) {
     console.log(error);
-    
   }
 };
