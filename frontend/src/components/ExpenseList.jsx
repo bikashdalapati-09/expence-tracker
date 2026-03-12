@@ -1,26 +1,30 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const ExpenseList = ({setRefresh, refresh}) => {
+const ExpenseList = ({ setRefresh, refresh }) => {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
 
   const deleteHandler = async (id) => {
     try {
-      const res = await axios.post(`http://localhost:8000/api/expence/delete-expence/${id}`,{},{
-        withCredentials: true
-      })
-      if(res.data.success){
+      const res = await axios.post(
+        `http://localhost:8000/api/expence/delete-expence/${id}`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+      if (res.data.success) {
         toast.success(res.data.message);
-        setRefresh(prev => !prev)
-        fetchData()
+        setRefresh((prev) => !prev);
+        fetchData();
       }
-      
     } catch (error) {
       console.log(error.response.data.message);
-      
     }
-  }
+  };
 
   const fetchData = async () => {
     try {
@@ -42,7 +46,16 @@ const ExpenseList = ({setRefresh, refresh}) => {
 
   return (
     <div className="bg-white p-6 rounded-xl shadow">
-      <h2 className="text-xl font-bold mb-4">Recent Expenses</h2>
+      {/* Header with Title and View All button */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold">Recent Expenses</h2>
+        <button
+          onClick={() => (navigate("/allexpence"))}
+          className="border border-blue-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-50 cursor-pointer"
+        >
+          View All
+        </button>
+      </div>
 
       <table className="w-full text-left">
         <thead>
