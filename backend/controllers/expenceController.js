@@ -122,11 +122,11 @@ export const totalExpence = async (req, res) => {
       user: userId,
     });
 
-    if (expences.length === 0) {
-      return res.status(400).json({
-        message: "Expences not found",
-      });
-    }
+    // if (expences.length === 0) {
+    //   return res.status(400).json({
+    //     message: "Expences not found",
+    //   });
+    // }
     let total = 0;
     expences.map((e) => {
       total += e.amount;
@@ -134,7 +134,7 @@ export const totalExpence = async (req, res) => {
 
     return res.status(200).json({
       message: "Total expence calculated 👍",
-      total: total,
+      total: total
     });
   } catch (error) {
     console.log(error);

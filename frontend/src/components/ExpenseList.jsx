@@ -1,9 +1,26 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
-const ExpenseList = () => {
-
+const ExpenseList = ({setRefresh, refresh}) => {
   const [data, setData] = useState([]);
+
+  const deleteHandler = async (id) => {
+    try {
+      const res = await axios.post(`http://localhost:8000/api/expence/delete-expence/${id}`,{},{
+        withCredentials: true
+      })
+      if(res.data.success){
+        toast.success(res.data.message);
+        setRefresh(prev => !prev)
+        fetchData()
+      }
+      
+    } catch (error) {
+      console.log(error.response.data.message);
+      
+    }
+  }
 
   const fetchData = async () => {
     try {
@@ -21,7 +38,7 @@ const ExpenseList = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <div className="bg-white p-6 rounded-xl shadow">
@@ -51,7 +68,12 @@ const ExpenseList = () => {
                   : new Date(expense.date).toLocaleDateString()}
               </td>
               <td>
-                <button className="text-red-500 cursor-pointer">Delete</button>
+                <button
+                  onClick={() => deleteHandler(expense._id)}
+                  className="text-red-500 cursor-pointer"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

@@ -17,7 +17,7 @@ function Dashboard() {
 
         <AddExpense setRefresh={setRefresh} />
 
-        <ExpenseList />
+        <ExpenseList setRefresh={setRefresh} refresh={refresh} />
 
       </div>
 
