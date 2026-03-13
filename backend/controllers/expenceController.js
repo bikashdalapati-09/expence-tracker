@@ -33,7 +33,7 @@ export const getExpence = async (req, res) => {
   try {
     const userId = req.userId;
 
-    const expenses = await Expence.find({ user: userId });
+    const expenses = await Expence.find({ user: userId }).sort({ createdAt: -1 });
 
     res.status(200).json({
       expenses,
