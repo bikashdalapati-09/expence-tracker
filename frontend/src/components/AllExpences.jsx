@@ -2,9 +2,14 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import axios from "axios";
 import toast from "react-hot-toast";
+import UpdateExpenseModal from "./UpdateExpenseModal ";
 
 const AllExpences = () => {
   const [data, setData] = useState([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [id, setId] = useState(null);
+
   const totalAmount = data.reduce((sum, expense) => sum + expense.amount, 0);
 
   const deleteHandler = async (id) => {
@@ -16,8 +21,9 @@ const AllExpences = () => {
           withCredentials: true,
         },
       );
-      if(res.data.success){
-        toast.success(res.data.message)
+
+      if (res.data.success) {
+        toast.success(res.data.message);
         fetchData();
       }
     } catch (error) {}
@@ -41,6 +47,7 @@ const AllExpences = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Navbar */}
@@ -52,7 +59,6 @@ const AllExpences = () => {
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
           <h2 className="text-3xl font-bold text-gray-800">All Expenses</h2>
 
-          {/* Search bar */}
           <div className="relative w-full md:w-80">
             <input
               type="text"
@@ -92,18 +98,31 @@ const AllExpences = () => {
               {data.map((expences) => (
                 <tr key={expences._id} className="hover:bg-gray-50 transition">
                   <td className="px-6 py-4 font-medium">{expences.title}</td>
+
                   <td className="px-6 py-4">{expences.catagory}</td>
+
                   <td className="px-6 py-4">₹{expences.amount}</td>
-                  <td>
+
+                  <td className="px-6 py-4">
                     {new Date().toDateString() ===
                     new Date(expences.date).toDateString()
                       ? "Today"
                       : new Date(expences.date).toLocaleDateString()}
                   </td>
+
                   <td className="px-6 py-4 flex gap-2">
-                    <button className="bg-blue-100 text-blue-700 px-3 py-1 rounded-md hover:bg-blue-200 transition cursor-pointer">
+                    {/* Update Button */}
+                    <button
+                      onClick={() => {
+                        setId(expences._id);
+                        setIsModalOpen(true);
+                      }}
+                      className="bg-blue-100 text-blue-700 px-3 py-1 rounded-md hover:bg-blue-200 transition cursor-pointer"
+                    >
                       Update
                     </button>
+
+                    {/* Delete Button */}
                     <button
                       onClick={() => {
                         deleteHandler(expences._id);
@@ -117,7 +136,7 @@ const AllExpences = () => {
               ))}
             </tbody>
 
-            {/* Footer with totals */}
+            {/* Footer */}
             <tfoot className="bg-gray-50 font-semibold">
               <tr>
                 <td className="px-6 py-3" colSpan="2">
@@ -130,6 +149,14 @@ const AllExpences = () => {
           </table>
         </div>
       </div>
+
+      {/* Update Modal */}
+      <UpdateExpenseModal
+        isOpen={isModalOpen}
+        id={id}
+        refreshdata={fetchData}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
