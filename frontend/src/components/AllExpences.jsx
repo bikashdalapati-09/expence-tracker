@@ -1,10 +1,27 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const AllExpences = () => {
   const [data, setData] = useState([]);
   const totalAmount = data.reduce((sum, expense) => sum + expense.amount, 0);
+
+  const deleteHandler = async (id) => {
+    try {
+      const res = await axios.post(
+        `http://localhost:8000/api/expence/delete-expence/${id}`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+      if(res.data.success){
+        toast.success(res.data.message)
+        fetchData();
+      }
+    } catch (error) {}
+  };
 
   const fetchData = async () => {
     try {
@@ -14,7 +31,7 @@ const AllExpences = () => {
           withCredentials: true,
         },
       );
-      
+
       setData(res.data.expenses || []);
     } catch (error) {
       console.log(error.response.data.message);
@@ -87,7 +104,12 @@ const AllExpences = () => {
                     <button className="bg-blue-100 text-blue-700 px-3 py-1 rounded-md hover:bg-blue-200 transition cursor-pointer">
                       Update
                     </button>
-                    <button className="bg-red-100 text-red-700 px-3 py-1 rounded-md hover:bg-red-200 transition cursor-pointer">
+                    <button
+                      onClick={() => {
+                        deleteHandler(expences._id);
+                      }}
+                      className="bg-red-100 text-red-700 px-3 py-1 rounded-md hover:bg-red-200 transition cursor-pointer"
+                    >
                       Delete
                     </button>
                   </td>
