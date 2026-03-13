@@ -35,7 +35,7 @@ const UpdateExpenseModal = ({ isOpen, id, refreshdata,onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
       {/* Modal Card */}
-      <div className="bg-white rounded-xl shadow-lg p-6 w-[400px]">
+      <div className="bg-white rounded-xl shadow-lg p-6 w-100">
         <h2 className="text-xl font-bold mb-4">Update Expense</h2>
 
         <form onSubmit={onSubmitHandler} className="flex flex-col gap-4">
