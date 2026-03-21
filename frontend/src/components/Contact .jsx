@@ -25,12 +25,12 @@ const Contact = () => {
 
               <div className="flex items-center gap-3">
                 <FaEnvelope />
-                <span>contact@email.com</span>
+                <span>bikashdalapati09@email.com</span>
               </div>
 
               <div className="flex items-center gap-3">
                 <FaPhoneAlt />
-                <span>+91 9876543210</span>
+                <span>+91 8927182293</span>
               </div>
 
             </div>
