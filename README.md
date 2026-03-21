@@ -47,7 +47,6 @@ This project helps users manage and analyze their daily expenses with an interac
 * Tailwind CSS
 * Axios
 * React Router
-* Recharts
 * React Hot Toast
 
 **Backend**
@@ -58,6 +57,13 @@ This project helps users manage and analyze their daily expenses with an interac
 **Database**
 
 * MongoDB
+
+**Tools**
+
+* Visual Studio Code
+* git
+* Postman
+* mongoDB Compass
 
 ---
 
