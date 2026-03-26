@@ -129,17 +129,6 @@ npm run dev
 
 ---
 
-## 📸 Screenshots
-
-* Dashboard with expense summary
-* Expense management table
-* Expense charts
-* GitHub style About page
-
-*(Add screenshots here later)*
-
----
-
 ## 📌 Future Improvements
 
 * Expense category filters
